@@ -61,7 +61,6 @@ jobs:
           -backend-config='bucket=$S3_BUCKET_NAME' \
           -backend-config='key=terraform-${{ env.ECR_REPO_NAME }}.tfstate' \
           -backend-config='dynamodb_table=$DYNAMODB_TF_TABLENAME' \
-          -backend-config='role_arn=arn:aws:iam::026591336708:role/github-actions-role'
         env:
           S3_BUCKET_NAME: ${{ secrets.S3_BUCKET_NAME }}
           DYNAMODB_TF_TABLENAME: ${{ secrets.DYNAMODB_TF_TABLENAME }}
