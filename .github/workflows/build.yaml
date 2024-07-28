@@ -53,14 +53,16 @@ jobs:
 
       - name: "Terraform reinit"
         shell: bash
-        run: terraform init -upgrade -reconfigure \
-          -backend-config='skip_metadata_api_check=true' \
-          -backend-config='skip_region_validation=true' \
-          -backend-config='skip_credentials_validation=true' \
-          -backend-config='region=eu-central-1' \
-          -backend-config='bucket=${{ secrets.S3_BUCKET_NAME }}' \
-          -backend-config='key=terraform-${{ env.ECR_REPO_NAME }}.tfstate' \
-          -backend-config='dynamodb_table=${{ secrets.DYNAMODB_TF_TABLENAME }}'
+        run: | 
+          set -eux \
+          terraform init -upgrade -reconfigure \
+            -backend-config='skip_metadata_api_check=true' \
+            -backend-config='skip_region_validation=true' \
+            -backend-config='skip_credentials_validation=true' \
+            -backend-config='region=eu-central-1' \
+            -backend-config='bucket=${{ secrets.S3_BUCKET_NAME }}' \
+            -backend-config='key=terraform-${{ env.ECR_REPO_NAME }}.tfstate' \
+            -backend-config='dynamodb_table=${{ secrets.DYNAMODB_TF_TABLENAME }}'
 
       - id: validate
         run: terraform validate
