@@ -1,0 +1,7 @@
+.terraform
+.terraform.**
+*.pub
+tutorial_kp
+secrets.tfvar
+terraform.*
+.idea

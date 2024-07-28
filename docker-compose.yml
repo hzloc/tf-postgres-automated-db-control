@@ -1,0 +1,9 @@
+services:
+  postgres:
+    image: postgres:14.5
+    ports:
+      - 54325:5432
+    environment:
+      - POSTGRES_PASSWORD=fddomain
+      - POSTGRES_USER=fddomain
+      - POSTGRES_DB=fddomain
