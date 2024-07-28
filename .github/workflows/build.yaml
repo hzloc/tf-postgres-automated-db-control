@@ -58,12 +58,9 @@ jobs:
           -backend-config='skip_region_validation=true' \
           -backend-config='skip_credentials_validation=true' \
           -backend-config='region=eu-central-1' \
-          -backend-config="bucket=$S3_BUCKET_NAME" \
+          -backend-config='bucket=${{ secrets.S3_BUCKET_NAME }}' \
           -backend-config='key=terraform-${{ env.ECR_REPO_NAME }}.tfstate' \
-          -backend-config="dynamodb_table=$DYNAMODB_TF_TABLENAME" \
-        env:
-          S3_BUCKET_NAME: ${{ secrets.S3_BUCKET_NAME }}
-          DYNAMODB_TF_TABLENAME: ${{ secrets.DYNAMODB_TF_TABLENAME }}
+          -backend-config='dynamodb_table=${{ secrets.DYNAMODB_TF_TABLENAME }}'
 
       - id: validate
         run: terraform validate
