@@ -63,12 +63,12 @@ variable "db_username" {
 
 variable "db_password" {
   type        = string
-  sensitive = false
+  sensitive = true
   description = "DB master password"
 }
 
 variable "whitelisted_ip" {
-  sensitive   = false
+  sensitive   = true
   type        = string
   description = "Whitelisted IPS"
 }
