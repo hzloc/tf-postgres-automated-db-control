@@ -71,7 +71,7 @@ jobs:
               -var 'whitelisted_ip=${{ secrets.WHITELISTED_IP }}' \
               -var 'db_password=${{ secrets.DB_PASSWORD }}' \
               -var 'db_username=${{ secrets.DB_USERNAME }}' \ 
-              -var 'ecr_name=${{ env.ECR_REPO_NAME }}' -auto-approve
+              -var 'ecr_name_repo=${{ env.ECR_REPO_NAME }}' -auto-approve
 
         env:
           WHITELISTED_IP: ${{ secrets.WHITELISTED_IP }}

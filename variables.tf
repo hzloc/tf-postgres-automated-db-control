@@ -73,7 +73,7 @@ variable "whitelisted_ip" {
   description = "Whitelisted IPS"
 }
 
-variable "ecr_name" {
+variable "ecr_name_repo" {
   type = string
   description = "The name of the repository which will be derived from the github repo"
   sensitive = false

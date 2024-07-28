@@ -108,7 +108,7 @@ resource "aws_security_group" "tutorial_ec2_sg" {
 }
 
 resource "aws_ecr_repository" "db_migration_repository" {
-  name = var.ecr_name
+  name = var.ecr_name_repo
   image_tag_mutability = "MUTABLE"
 }
 

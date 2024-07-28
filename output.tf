@@ -10,6 +10,6 @@ output "database_port" {
   value = aws_db_instance.postgres_db.port
 }
 
-output "ecr_repository_id" {
-  value = aws_ecr_repository.db_migration_repository.id
+output "ecr_repository_name" {
+  value = aws_ecr_repository.db_migration_repository.name
 }
