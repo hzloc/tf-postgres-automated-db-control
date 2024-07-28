@@ -51,7 +51,21 @@ jobs:
           repo="${GITHUB_REPOSITORY,,}"
           echo "ECR_REPO_NAME=${repo//\//_}" >> $GITHUB_ENV
 
-      - run: terraform init
+      - name: "Terraform reinit"
+        shell: bash
+        run: terraform init -upgrade -reconfigure \
+          -backend-config='skip_metadata_api_check=true' \
+          -backend-config='skip_region_validation=true' \
+          -backend-config='skip_credentials_validation=true' \
+          -backend-config='region=eu-central-1' \
+          -backend-config='bucket=$S3_BUCKET_NAME' \
+          -backend-config='key=terraform-${{ env.ECR_REPO_NAME }}.tfstate' \
+          -backend-config='dynamodb_table=$DYNAMODB_TF_TABLENAME' \
+          -backend-config='role_arn=arn:aws:iam::026591336708:role/github-actions-role'
+        env:
+          S3_BUCKET_NAME: ${{ secrets.S3_BUCKET_NAME }}
+          DYNAMODB_TF_TABLENAME: ${{ secrets.DYNAMODB_TF_TABLENAME }}
+
       - id: validate
         run: terraform validate
         continue-on-error: false
