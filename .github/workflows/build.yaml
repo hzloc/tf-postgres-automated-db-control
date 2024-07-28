@@ -64,16 +64,17 @@ jobs:
             -backend-config='key=terraform-${{ env.ECR_REPO_NAME }}.tfstate' \
             -backend-config='dynamodb_table=${{ secrets.DYNAMODB_TF_TABLENAME }}'
 
-      - id: apply
+      - name: "Terraform Apply config"
+        shell: bash
         run: |
-          set -eux \
+            set -eux \
             terraform apply --input=false -auto-approve \
-            -var whitelisted_ip=${{ secrets.WHITELISTED_IP }} \
-            -var db_password=${{ secrets.DB_PASSWORD }} \
-            -var db_username=${{ secrets.DB_USERNAME }} \ 
-            -var ecr_name=${{ env.ECR_REPO_NAME }} \
-             && terraform output -raw database_endpoint > database_endpointname \
-             && terraform output -raw database_port > database_port
+              -var whitelisted_ip=${{ secrets.WHITELISTED_IP }} \
+              -var db_password=${{ secrets.DB_PASSWORD }} \
+              -var db_username=${{ secrets.DB_USERNAME }} \ 
+              -var ecr_name=${{ env.ECR_REPO_NAME }} \
+               && terraform output -raw database_endpoint > database_endpointname \
+               && terraform output -raw database_port > database_port
         env:
           WHITELISTED_IP: ${{ secrets.WHITELISTED_IP }}
           DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
