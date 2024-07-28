@@ -64,12 +64,9 @@ jobs:
             -backend-config='key=terraform-${{ env.ECR_REPO_NAME }}.tfstate' \
             -backend-config='dynamodb_table=${{ secrets.DYNAMODB_TF_TABLENAME }}'
 
-      - id: validate
-        run: terraform validate
-        continue-on-error: false
-
       - id: apply
         run: |
+          set -eux \
             terraform apply --input=false -auto-approve \
             -var whitelisted_ip=${{ secrets.WHITELISTED_IP }} \
             -var db_password=${{ secrets.DB_PASSWORD }} \
