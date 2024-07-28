@@ -68,13 +68,14 @@ jobs:
         shell: bash
         run: |
             set -eux \
-            terraform apply --input=false -auto-approve \
+            terraform apply \
               -var whitelisted_ip=${{ secrets.WHITELISTED_IP }} \
               -var db_password=${{ secrets.DB_PASSWORD }} \
               -var db_username=${{ secrets.DB_USERNAME }} \ 
               -var ecr_name=${{ env.ECR_REPO_NAME }} \
                && terraform output -raw database_endpoint > database_endpointname \
-               && terraform output -raw database_port > database_port
+               && terraform output -raw database_port > database_port \
+              -auto-approve
         env:
           WHITELISTED_IP: ${{ secrets.WHITELISTED_IP }}
           DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
