@@ -69,10 +69,10 @@ jobs:
         run: |
             set -eux \
             terraform apply \
-              -var whitelisted_ip=${{ secrets.WHITELISTED_IP }} \
-              -var db_password=${{ secrets.DB_PASSWORD }} \
-              -var db_username=${{ secrets.DB_USERNAME }} \ 
-              -var ecr_name=${{ env.ECR_REPO_NAME }} \
+              -var 'whitelisted_ip=${{ secrets.WHITELISTED_IP }}' \
+              -var 'db_password=${{ secrets.DB_PASSWORD }}' \
+              -var 'db_username=${{ secrets.DB_USERNAME }}' \ 
+              -var 'ecr_name=${{ env.ECR_REPO_NAME }}' \
                && terraform output -raw database_endpoint > database_endpointname \
                && terraform output -raw database_port > database_port \
               -auto-approve
