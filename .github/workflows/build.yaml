@@ -48,8 +48,8 @@ jobs:
         run: terraform plan --input=false -var whitelisted_ip="$WHITELISTED_IP" -var db_password="$DB_PASSWORD" -var db_username="$DB_USERNAME"
         env:
           WHITELISTED_IP: ${{ secrets.WHITELISTED_IP }}
-          DB_PASSWORD: ${{ secrets.$DB_PASSWORD }}
-          DB_USERNAME: ${{ secrets.$DB_USERNAME }}
+          DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
+          DB_USERNAME: ${{ secrets.DB_USERNAME }}
 
       - run: echo ${{ steps.plan.outputs.stdout }}
       - run: echo ${{ steps.plan.outputs.stderr }}
