@@ -45,7 +45,7 @@ jobs:
 
       - run: terraform init
       - id: plan
-        run: terraform plan --input=false -var whitelisted_ip="$WHITELISTED_IP" -var db_password="$DB_PASSWORD" -var db_username="$DB_USERNAME"
+        run: terraform plan --input=false -var whitelisted_ip=${{ secrets.WHITELISTED_IP }} -var db_password=${{ secrets.DB_PASSWORD }} -var db_username=${{ secrets.DB_USERNAME }}
         env:
           WHITELISTED_IP: ${{ secrets.WHITELISTED_IP }}
           DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
