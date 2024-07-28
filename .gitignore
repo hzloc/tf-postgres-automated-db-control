@@ -5,3 +5,4 @@ tutorial_kp
 secrets.tfvar
 terraform.*
 .idea
+**.pyc
