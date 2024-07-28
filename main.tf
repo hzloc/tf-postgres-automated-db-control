@@ -107,6 +107,11 @@ resource "aws_security_group" "tutorial_ec2_sg" {
   }
 }
 
+resource "aws_ecr_repository" "db_migration_repository" {
+  name = var.ecr_name
+  image_tag_mutability = "MUTABLE"
+}
+
 resource "aws_security_group" "tutorial_db_sg" {
   name        = "tutorial_db_sg"
   description = "Security group to connect postgres"
