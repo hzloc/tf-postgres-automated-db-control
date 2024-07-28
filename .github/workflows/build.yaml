@@ -35,9 +35,7 @@ jobs:
          WHITELISTED_IP: ${{ secrets.MY_IP }}
          DB_USERNAME: ${{ secrets.DB_USERNAME }}
          DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
-        run: terraform plan --input=false -var whitelisted_ip=$WHITELISTED_IP \
-             -var db_password=$DB_PASSWORD \
-             -var db_username=$DB_USERNAME
+        run: terraform plan --input=false -var whitelisted_ip=$WHITELISTED_IP -var db_password=$DB_PASSWORD -var db_username=$DB_USERNAME
 
 
       - run: echo ${{ steps.plan.outputs.stdout }}
