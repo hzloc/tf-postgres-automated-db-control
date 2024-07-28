@@ -68,7 +68,7 @@ variable "db_password" {
 }
 
 variable "whitelisted_ip" {
-  sensitive   = true
+  sensitive   = false
   type        = string
   description = "Whitelisted IPS"
 }
