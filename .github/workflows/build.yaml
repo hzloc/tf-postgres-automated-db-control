@@ -62,8 +62,8 @@ jobs:
             -var whitelisted_ip=${{ secrets.WHITELISTED_IP }} \
             -var db_password=${{ secrets.DB_PASSWORD }} \
             -var db_username=${{ secrets.DB_USERNAME }} \ 
-            -var ecr_name=${{ env.ECR_REPO_NAME }}
-             && terraform output -raw database_endpoint > database_endpointname
+            -var ecr_name=${{ env.ECR_REPO_NAME }} \
+             && terraform output -raw database_endpoint > database_endpointname \
              && terraform output -raw database_port > database_port
         env:
           WHITELISTED_IP: ${{ secrets.WHITELISTED_IP }}
