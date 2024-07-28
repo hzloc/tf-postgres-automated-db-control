@@ -73,15 +73,11 @@ jobs:
       - name: "Terraform Apply config"
         shell: bash
         run: |
-            set -eux terraform apply \
+            set -eux \
+          terraform apply \
               -var 'whitelisted_ip=${{ secrets.WHITELISTED_IP }}' \
               -var 'db_password=${{ secrets.DB_PASSWORD }}' \
               -var 'db_username=${{ secrets.DB_USERNAME }}' \ 
               -var 'ecr_name_repo=${{ env.ECR_REPO_NAME }}' -auto-approve
-
-        env:
-          WHITELISTED_IP: ${{ secrets.WHITELISTED_IP }}
-          DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
-          DB_USERNAME: ${{ secrets.DB_USERNAME }}
 
 
