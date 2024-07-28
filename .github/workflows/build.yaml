@@ -30,7 +30,9 @@ jobs:
           terraform_version: ">=1.2.0"
       - run: terraform init
       - id: plan
-        run: terraform plan
+        run: terraform plan --input=false -var whitelisted_ip=${{ secrets.MY_IP }} \
+             -var db_password=${{ secrets.DB_PASSWORD }} \
+             -var db_username=${{ secrets.DB_USERNAME }}
 
       - run: echo ${{ steps.plan.outputs.stdout }}
       - run: echo ${{ steps.plan.outputs.stderr }}
