@@ -23,6 +23,14 @@ jobs:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v4
 
-      # Runs a single command using the runners shell
-      - name: Run a one-line script
-        run: echo Hello, world!
+      # Sets up terraform
+      - uses: actions/setup-terraform@v3
+        with:
+          terraform_version: ">=1.2.0"
+      - run: terraform init
+      - id: plan
+        run: terraform plan
+
+      - run: echo ${{ steps.plan.outputs.stdout }}
+      - run: echo ${{ steps.plan.outputs.stderr }}
+      - run: echo ${{ steps.plan.outputs.exitcode }}
