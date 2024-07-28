@@ -58,12 +58,12 @@ variable "settings" {
 variable "db_username" {
   type        = string
   description = "DB username"
-  sensitive = false
+  sensitive = true
 }
 
 variable "db_password" {
   type        = string
-  sensitive = true
+  sensitive = false
   description = "DB master password"
 }
 
