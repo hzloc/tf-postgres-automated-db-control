@@ -11,6 +11,13 @@ on:
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 
+env:
+  AWS_REGION: "eu-central-1"
+
+permissions:
+  id-token: write   # This is required for requesting the JWT
+  contents: read    # This is required for actions/checkout
+
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
   # This workflow contains a single job called "build"
@@ -22,6 +29,13 @@ jobs:
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v4
+
+      # AWS CONFIGURATION for terraform to use
+      - name: "Configure AWS Credentials Action for GitHub Actions"
+        uses: aws-actions/configure-aws-credentials@v4.0.2
+        with:
+          role-to-assume: arn:aws:iam::026591336708:role/github-actions-role
+          aws-region: ${{ env.AWS_REGION }}
 
       # Sets up terraform
       - name: HashiCorp - Setup Terraform
