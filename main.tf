@@ -145,9 +145,14 @@ resource "aws_db_instance" "postgres_db" {
   vpc_security_group_ids      = [aws_security_group.tutorial_db_sg.id]
   skip_final_snapshot = true
 }
-resource "aws_key_pair" "tutorial_kp" {
+data "aws_key_pair" "tutorial_kp" {
   key_name   = "tutorial_kp"
-  public_key = file("tutorial_kp.pub")
+  include_public_key = true
+
+  filter {
+    name   = "key-name"
+    values = ["tutorial_kp"]
+  }
 }
 
 data "aws_ami" "ubuntu" {
@@ -168,7 +173,7 @@ resource "aws_instance" "postgres_ec2_instance" {
   ami                    = data.aws_ami.ubuntu.id
   instance_type          = var.settings.app.instance_type
   subnet_id              = aws_subnet.postgres_public_subnet[count.index].id
-  key_name               = aws_key_pair.tutorial_kp.key_name
+  key_name               = data.aws_key_pair.tutorial_kp.key_name
   vpc_security_group_ids = [aws_security_group.tutorial_ec2_sg.id]
   tags = {
     Name = "postgres_ec2_instance_${count.index}"
