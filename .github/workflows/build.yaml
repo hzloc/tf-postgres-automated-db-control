@@ -28,11 +28,17 @@ jobs:
         uses: hashicorp/setup-terraform@v3.1.1
         with:
           terraform_version: ">=1.2.0"
+
       - run: terraform init
       - id: plan
-        run: terraform plan --input=false -var whitelisted_ip=${{ secrets.MY_IP }} \
-             -var db_password=${{ secrets.DB_PASSWORD }} \
-             -var db_username=${{ secrets.DB_USERNAME }}
+        env:
+         WHITELISTED_IP: ${{ secrets.MY_IP }}
+         DB_USERNAME: ${{ secrets.DB_USERNAME }}
+         DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
+        run: terraform plan --input=false -var whitelisted_ip=$WHITELISTED_IP \
+             -var db_password=$DB_PASSWORD \
+             -var db_username=$DB_USERNAME
+
 
       - run: echo ${{ steps.plan.outputs.stdout }}
       - run: echo ${{ steps.plan.outputs.stderr }}
