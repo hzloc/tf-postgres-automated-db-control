@@ -54,7 +54,7 @@ jobs:
       - name: "Terraform init"
         shell: bash
         run: >
-            terraform init -upgrade -reconfigure
+            terraform init -upgrade -reconfigure -input=false
               -backend-config='region=eu-central-1'
               -backend-config='key=${{ env.ECR_REPO_NAME }}.tfstate'
               -backend-config='bucket=${{ secrets.S3_BUCKET_NAME }}'
