@@ -56,6 +56,18 @@ jobs:
         run: |
           set -eux \
           terraform validate
+      
+
+      - name: "Terraform plan"
+        shelll: bash
+        run: terraform plan -no-input \
+          -var 'whitelisted_ip=${{ secrets.WHITELISTED_IP }}' \
+          -var 'db_password=${{ secrets.DB_PASSWORD }}' \
+          -var 'db_username=${{ secrets.DB_USERNAME }}' \
+          -var 'ecr_name_repo=${{ env.ECR_REPO_NAME }}' \
+          -var 'bucket_name=tf-states-hzlocs-2332' \
+          -var 'dynamodb_table_name=tf-state'
+
 
       - name: "Terraform Apply config"
         shell: bash
