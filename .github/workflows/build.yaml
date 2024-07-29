@@ -60,7 +60,7 @@ jobs:
 
       - name: "Terraform plan"
         shell: bash
-        run: terraform plan -out = plan.tfplan \
+        run: terraform plan -out=plan.tfplan \
           -var whitelisted_ip=${{ secrets.WHITELISTED_IP }} \
           -var db_password=${{ secrets.DB_PASSWORD }} \
           -var db_username=${{ secrets.DB_USERNAME }} \
