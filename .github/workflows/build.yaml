@@ -59,7 +59,7 @@ jobs:
       
 
       - name: "Terraform plan"
-        shelll: bash
+        shell: bash
         run: terraform plan -no-input \
           -var 'whitelisted_ip=${{ secrets.WHITELISTED_IP }}' \
           -var 'db_password=${{ secrets.DB_PASSWORD }}' \
