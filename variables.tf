@@ -79,12 +79,3 @@ variable "ecr_name_repo" {
   sensitive = false
 }
 
-variable "bucket_name" {
-  type = string
-  description = "Bucket name"
-  sensitive = false
-}
-variable "dynamodb_table_name" {
-  type = string
-  sensitive = false
-}
