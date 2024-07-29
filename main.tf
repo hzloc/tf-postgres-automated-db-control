@@ -147,7 +147,7 @@ resource "aws_db_instance" "postgres_db" {
   engine_version              = var.settings.database.engine_version
   password                    = var.db_password
   username                    = var.db_username
-  db_subnet_group_name        = aws_db_subnet_group.postgres_sg.id
+  db_subnet_group_name        = aws_db_subnet_group.postgres_sg.name
   vpc_security_group_ids      = [aws_security_group.tutorial_db_sg.id]
   skip_final_snapshot = true
 }
