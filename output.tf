@@ -13,3 +13,7 @@ output "database_port" {
 output "ecr_repository_name" {
   value = aws_ecr_repository.db_migration_repository.name
 }
+
+output "subnet_group_name" {
+  value = aws_db_subnet_group.postgres_sg.id
+}
