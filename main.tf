@@ -5,13 +5,7 @@ terraform {
       version = "~> 4.16"
     }
   }
-  backend "s3" {
-    bucket = "placehodler"
-    key = "placeholder"
-    dynamodb_table = "placeholder"
-    region = "eu-central-1"
-    assume_role_policy="arn:aws:iam::026591336708:role/github-actions-role"
-  }
+  backend "s3" {}
   required_version = ">=1.2.0"
 }
 
