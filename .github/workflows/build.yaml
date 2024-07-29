@@ -50,6 +50,9 @@ jobs:
           set -eux 
           repo="${GITHUB_REPOSITORY,,}"
           echo "ECR_REPO_NAME=${repo//\//_}" >> $GITHUB_ENV
+      - name: "Terraform init"
+        shell: bash
+        run: terraform init
 
       - name: "Terraform validate"
         shell: bash
@@ -65,7 +68,7 @@ jobs:
 
       - name: "Terraform Apply config"
         shell: bash
-        run: |
+        run: >
             terraform apply -auto-approve \
               -var 'whitelisted_ip=${{ secrets.WHITELISTED_IP }}' \
               -var 'db_password=${{ secrets.DB_PASSWORD }}' \
