@@ -71,14 +71,19 @@ jobs:
 
       - name: "Terraform plan"
         shell: bash
-        run: terraform plan -out=plan.tfplan -var whitelisted_ip=${{ secrets.WHITELISTED_IP }} -var db_password=${{ secrets.DB_PASSWORD }} -var db_username=${{ secrets.DB_USERNAME }} -var ecr_name_repo=${{ env.ECR_REPO_NAME }} -var bucket_name=tf-states-hzlocs-2332 -var dynamodb_table_name=tf-state
+        run: >
+          terraform plan -out=plan.tfplan
+          -var whitelisted_ip=${{ secrets.WHITELISTED_IP }}
+          -var db_password=${{ secrets.DB_PASSWORD }}
+          -var db_username=${{ secrets.DB_USERNAME }}
+          -var ecr_name_repo=${{ env.ECR_REPO_NAME }}
 
 
       - name: "Terraform Apply config"
         shell: bash
         run: >
             terraform apply -auto-approve
-              -var 'whitelisted_ip=${{ secrets.WHITELISTED_IP }}' 
-              -var 'db_password=${{ secrets.DB_PASSWORD }}' 
-              -var 'db_username=${{ secrets.DB_USERNAME }}' 
-              -var 'ecr_name_repo=${{ env.ECR_REPO_NAME }}'
+            -var 'whitelisted_ip=${{ secrets.WHITELISTED_IP }}' 
+            -var 'db_password=${{ secrets.DB_PASSWORD }}' 
+            -var 'db_username=${{ secrets.DB_USERNAME }}' 
+            -var 'ecr_name_repo=${{ env.ECR_REPO_NAME }}'
