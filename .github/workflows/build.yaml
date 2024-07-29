@@ -52,7 +52,14 @@ jobs:
           echo "ECR_REPO_NAME=${repo//\//_}" >> $GITHUB_ENV
       - name: "Terraform init"
         shell: bash
-        run: terraform init
+        run: >
+            terraform init -upgrade -reconfigure
+              -backend-config='region=eu-central-1'
+              -backend-config='key=${{ env.ECR_NAME }}.tfstate'
+              -backend-config='bucket=${{ secrets.S3_BUCKET_NAME }}'
+              -backend-config='dynamodb_table=${{ secrets.DYNAMODB_TF_TABLENAME }}'
+              -backend-config='assume_role_policy=arn:aws:iam::026591336708:role/github-actions-role'
+              
 
       - name: "Terraform validate"
         shell: bash

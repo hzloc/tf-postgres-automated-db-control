@@ -7,6 +7,7 @@ terraform {
   }
   backend "s3" {
     bucket = "tf-states-hzlocs-2332"
+    key = ""
     dynamodb_table = "tf-state"
     region = "eu-central-1"
     assume_role_policy="arn:aws:iam::026591336708:role/github-actions-role"
