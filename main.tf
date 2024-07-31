@@ -5,7 +5,12 @@ terraform {
       version = "~> 4.16"
     }
   }
-  backend "s3" {}
+  backend "s3" {
+    bucket = "tf-states-hzlocs-2332"
+    dynamodb_table = "tf-state"
+    key = "hzloc_tf-postgres-automated-db-control.tfstate"
+    region = "eu-central-1"
+  }
   required_version = ">=1.2.0"
 }
 

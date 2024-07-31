@@ -1,16 +1,17 @@
-FROM ubuntu:20.04
-ARG DEBIAN_FRONTEND=noninteractive
-E
-ENV DB_URL=postgresql+psycopg2://fddomain:fddomain@localhost:54325/fddomain
+FROM public.ecr.aws/lambda/python:3.12
 
-COPY . .
+# set DB connection string
+ENV DB_URL="postgresql+psycopg2://fddomain:fddomain@172.22.0.2:5432/fddomain"
 
-# update the system
-RUN --mount=type=cache,target=/var/cache/apt \
-    apt-get update \
-    && apt-get install -y python3-pip \
-    && apt-get install -y postgresql
+# Copy requirements.txt
+COPY requirements.txt alembic.ini ${LAMBDA_TASK_ROOT}
+COPY migration ${LAMBDA_TASK_ROOT}/migration
 
-# install requirements
+# Install the specified packages
 RUN pip install -r requirements.txt
-RUN alembic upgrade head
+
+# Copy function code
+COPY lambda_function.py ${LAMBDA_TASK_ROOT}
+
+# Set the CMD to your handler (could also be done as a parameter override outside of the Dockerfile)
+CMD [ "lambda_function.handler" ]

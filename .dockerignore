@@ -1,0 +1,5 @@
+.github
+.terraform
+tutorial_kp
+*.pub
+**pycache**
