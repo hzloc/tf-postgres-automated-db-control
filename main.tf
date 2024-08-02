@@ -227,7 +227,7 @@ data "aws_ecr_image" "service_image" {
 resource "aws_lambda_function" "db_migration_lambda" {
   function_name = "migrate_db"
   role          = aws_iam_role.db_migrate_lambda.arn
-  image_uri = data.aws_ecr_image.service_image.image_uri
+  image_uri = "${aws_ecr_repository.db_migration_repository.repository_url}:${data.aws_ecr_image.service_image.image_tag}"
   handler = "lambda_function.handler"
   runtime = "python3.10"
 
