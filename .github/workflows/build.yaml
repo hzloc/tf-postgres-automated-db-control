@@ -58,7 +58,7 @@ jobs:
         run: | 
           aws create-repository --repository-name "$ECR_REPO_NAME"
         env:
-          ECR_REPO_NAME: ${{ ECR_REPO_NAME }}
+          ECR_REPO_NAME: ${{ env.ECR_REPO_NAME }}
 
       - name: Build, tag, and push image to Amazon ECR
         id: build-publish
