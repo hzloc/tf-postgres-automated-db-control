@@ -77,7 +77,7 @@ jobs:
         id: tf_apply
         shell: bash
         run: |
-            terraform apply -auto-approve
+            terraform apply -auto-approve \
               -var 'whitelisted_ip=${{ secrets.WHITELISTED_IP }}' \
               -var 'db_password=${{ secrets.DB_PASSWORD }}' \
               -var 'db_username=${{ secrets.DB_USERNAME }}' \
