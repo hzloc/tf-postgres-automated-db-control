@@ -225,8 +225,8 @@ resource "aws_lambda_function" "db_migration_lambda" {
   image_uri = aws_ecr_repository.db_migration_repository.repository_url
 
   vpc_config {
-    count = var.subnet_count.public
+
     security_group_ids = [aws_security_group.tutorial_ec2_sg.id]
-    subnet_ids         = [aws_subnet.postgres_public_subnet[count.index].id]
+    subnet_ids         = [aws_subnet.postgres_public_subnet[count.index]]
   }
 }
