@@ -56,7 +56,7 @@ jobs:
       - name: "Create AWS ECR repository"
         continue-on-error: true
         run: | 
-          aws create-repository --repository-name "$ECR_REPO_NAME"
+          aws ecr create-repository --repository-name "$ECR_REPO_NAME"
         env:
           ECR_REPO_NAME: ${{ env.ECR_REPO_NAME }}
 
