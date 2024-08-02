@@ -46,6 +46,30 @@ jobs:
           repo="${GITHUB_REPOSITORY,,}"
           echo "ECR_REPO_NAME=${repo//\//_}" >> $GITHUB_ENV
 
+      - name: "Create AWS ECR repository"
+        continue-on-error: true
+        run: | 
+          aws create-repository --repository-name "$ECR_REPO_NAME"
+
+      - name: Build, tag, and push image to Amazon ECR
+        id: build-publish
+        shell: bash
+        env:
+          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          ECR_REPOSITORY: ${{ env.ECR_REPO_NAME }}
+          DOCKER_BUILD_DIR: "."
+          DOCKER_FILE_PATH: "Dockerfile"
+          IMAGE_TAG: "test"
+        run: |
+          docker build "$DOCKER_BUILD_DIR" \
+            --build-arg DB_HOST="$DB_HOST" --build-arg DB_PORT="$DB_PORT" --build-arg 'DB_USERNAME=${{ secrets.DB_USERNAME }}' \
+            --build-arg 'DB_PASSWORD=${{ secrets.DB_PASSWORD }}' --build-arg 'DB_NAME=${{ secrets.DB_USERNAME }}' \
+            --platform linux/amd64 -f "$DOCKER_FILE_PATH" -t "$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG" \
+          docker push "$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG"
+          echo "IMAGE $IMAGE_TAG is pushed to $ECR_REGISTRY/$ECR_REPOSITORY"
+          echo "image_tag=$IMAGE_TAG" 
+          echo "FULL_IMAGE=$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG" >> $GITHUB_OUTPUTS
+
       - name: "Terraform init"
         shell: bash
         run: >
@@ -92,21 +116,4 @@ jobs:
           registries: ${{ inputs.aws_account_id }}
           mask-password: "true" # see: https://github.com/aws-actions/amazon-ecr-login#docker-credentials
 
-      - name: Build, tag, and push image to Amazon ECR
-        id: build-publish
-        shell: bash
-        env:
-          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-          ECR_REPOSITORY: ${{ env.ECR_REPO_NAME }}
-          DOCKER_BUILD_DIR: "."
-          DOCKER_FILE_PATH: "Dockerfile"
-          IMAGE_TAG: "test"
-        run: |
-          docker build "$DOCKER_BUILD_DIR" \
-            --build-arg DB_HOST="$DB_HOST" --build-arg DB_PORT="$DB_PORT" --build-arg 'DB_USERNAME=${{ secrets.DB_USERNAME }}' \
-            --build-arg 'DB_PASSWORD=${{ secrets.DB_PASSWORD }}' --build-arg 'DB_NAME=${{ secrets.DB_USERNAME }}' \
-            --platform linux/amd64 -f "$DOCKER_FILE_PATH" -t "$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG" \
-          docker push "$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG"
-          echo "IMAGE $IMAGE_TAG is pushed to $ECR_REGISTRY/$ECR_REPOSITORY"
-          echo "image_tag=$IMAGE_TAG" 
-          echo "FULL_IMAGE=$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG" >> $GITHUB_OUTPUTS
+
