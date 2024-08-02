@@ -224,7 +224,7 @@ resource "aws_lambda_function" "db_migration_lambda" {
   role          = aws_iam_role.db_migrate_lambda.arn
   image_uri = aws_ecr_repository.db_migration_repository.repository_url
   handler = "lambda_function.handler"
-  runtime = "python3.12"
+  runtime = "python3.10"
 
   vpc_config {
     security_group_ids = ["${aws_security_group.tutorial_ec2_sg.id}"]
