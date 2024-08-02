@@ -219,10 +219,15 @@ resource "aws_iam_role" "db_migrate_lambda" {
 })
 }
 
+data "aws_ecr_image" "service_image" {
+  repository_name = aws_ecr_repository.db_migration_repository.name
+  image_tag       = "latest"
+}
+
 resource "aws_lambda_function" "db_migration_lambda" {
   function_name = "migrate_db"
   role          = aws_iam_role.db_migrate_lambda.arn
-  image_uri = aws_ecr_repository.db_migration_repository.repository_url
+  image_uri = data.aws_ecr_image.service_image.image_uri
   handler = "lambda_function.handler"
   runtime = "python3.10"
 

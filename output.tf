@@ -21,3 +21,7 @@ output "created_subnet_group_name" {
 output "lambda_invoke_url" {
   value = aws_lambda_function.db_migration_lambda.invoke_arn
 }
+
+output "ecr_rep_url" {
+  value = aws_ecr_repository.db_migration_repository.repository_url
+}
