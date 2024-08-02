@@ -73,7 +73,7 @@ jobs:
           docker build \
             --build-arg DB_HOST="$DB_HOST" --build-arg DB_PORT="$DB_PORT" --build-arg 'DB_USERNAME=${{ secrets.DB_USERNAME }}' \
             --build-arg 'DB_PASSWORD=${{ secrets.DB_PASSWORD }}' --build-arg 'DB_NAME=${{ secrets.DB_USERNAME }}' \
-            --platform linux/amd64 -t "$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG" "$DOCKER_BUILD_DIR" \
+            --platform linux/amd64 -t "$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG" "$DOCKER_BUILD_DIR"
           docker push "$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG"
           echo "IMAGE $IMAGE_TAG is pushed to $ECR_REGISTRY/$ECR_REPOSITORY"
           echo "image_tag=$IMAGE_TAG" 
