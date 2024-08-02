@@ -230,6 +230,7 @@ resource "aws_lambda_function" "db_migration_lambda" {
   image_uri = "${aws_ecr_repository.db_migration_repository.repository_url}:${data.aws_ecr_image.service_image.image_tag}"
   handler = "lambda_function.handler"
   runtime = "python3.10"
+  package_type = "Image"
 
   vpc_config {
     security_group_ids = ["${aws_security_group.tutorial_ec2_sg.id}"]
