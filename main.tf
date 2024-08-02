@@ -226,7 +226,7 @@ resource "aws_lambda_function" "db_migration_lambda" {
 
   vpc_config {
     security_group_ids = ["${aws_security_group.tutorial_ec2_sg.id}"]
-    subnet_ids         = ["${aws_subnet.postgres_public_subnet[count.index].id}"]
+    subnet_ids         = ["${aws_subnet.postgres_public_subnet[0].id}"]
 
   }
 }
