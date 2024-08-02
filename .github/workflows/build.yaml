@@ -46,10 +46,19 @@ jobs:
           repo="${GITHUB_REPOSITORY,,}"
           echo "ECR_REPO_NAME=${repo//\//_}" >> $GITHUB_ENV
 
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v1
+        with:
+          registries: ${{ inputs.aws_account_id }}
+          mask-password: "true" # see: https://github.com/aws-actions/amazon-ecr-login#docker-credentials
+
       - name: "Create AWS ECR repository"
         continue-on-error: true
         run: | 
           aws create-repository --repository-name "$ECR_REPO_NAME"
+        env:
+          ECR_REPO_NAME: ${{ ECR_REPO_NAME }}
 
       - name: Build, tag, and push image to Amazon ECR
         id: build-publish
@@ -108,12 +117,3 @@ jobs:
               -var 'ecr_name_repo=${{ env.ECR_REPO_NAME }}'
             echo "DB_HOST=$(terraform output --raw database_endpoint)" >> "$GITHUB_OUTPUT"
             echo "DB_PORT=$(terraform output --raw database_port)" >> "$GITHUB_OUTPUT"
-
-      - name: Login to Amazon ECR
-        id: login-ecr
-        uses: aws-actions/amazon-ecr-login@v1
-        with:
-          registries: ${{ inputs.aws_account_id }}
-          mask-password: "true" # see: https://github.com/aws-actions/amazon-ecr-login#docker-credentials
-
-
