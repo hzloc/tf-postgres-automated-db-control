@@ -68,7 +68,7 @@ jobs:
           ECR_REPOSITORY: ${{ env.ECR_REPO_NAME }}
           DOCKER_BUILD_DIR: "."
           DOCKER_FILE_PATH: "Dockerfile"
-          IMAGE_TAG: "test"
+          IMAGE_TAG: "latest"
         run: |
           docker build \
             --build-arg DB_HOST="$DB_HOST" --build-arg DB_PORT="$DB_PORT" --build-arg 'DB_USERNAME=${{ secrets.DB_USERNAME }}' \
