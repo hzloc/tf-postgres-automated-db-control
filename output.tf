@@ -17,3 +17,7 @@ output "ecr_repository_name" {
 output "created_subnet_group_name" {
   value = aws_db_subnet_group.postgres_sg.name
 }
+
+output "lambda_invoke_url" {
+  value = aws_lambda_function.db_migration_lambda.invoke_arn
+}

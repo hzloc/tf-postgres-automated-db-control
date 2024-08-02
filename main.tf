@@ -94,6 +94,14 @@ resource "aws_security_group" "tutorial_ec2_sg" {
   }
 
   ingress {
+    description = "Allow port 9000 to outside"
+    from_port = "9000"
+    to_port = "9000"
+    protocol = "tcp"
+    cidr_blocks = ["${var.whitelisted_ip}/32"]
+  }
+
+  ingress {
     description = "Allow ssh from my computer"
     from_port   = "22"
     to_port     = "22"
@@ -190,4 +198,34 @@ resource "aws_instance" "postgres_ec2_instance" {
     Name = "postgres_ec2_instance_${count.index}"
   }
   associate_public_ip_address = true
+}
+
+resource "aws_iam_role" "db_migrate_lambda" {
+  assume_role_policy = jsonencode({
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Effect": "Allow",
+            "Action": [
+                "sts:AssumeRole"
+            ],
+            "Principal": {
+                "Service": [
+                    "lambda.amazonaws.com"
+                ]
+            }
+        }
+    ]
+})
+}
+
+resource "aws_lambda_function" "db_migration_lambda" {
+  function_name = "migrate_db"
+  role          = aws_iam_role.db_migrate_lambda.arn
+  image_uri = aws_ecr_repository.db_migration_repository.repository_url
+
+  vpc_config {
+    security_group_ids = [aws_security_group.tutorial_ec2_sg.id]
+    subnet_ids         = [aws_subnet.postgres_public_subnet.id]
+  }
 }

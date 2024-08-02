@@ -1,7 +1,13 @@
 FROM public.ecr.aws/lambda/python:3.12
 
 # set DB connection string
-ENV DB_URL="postgresql+psycopg2://fddomain:fddomain@172.22.0.2:5432/fddomain"
+ARG DB_HOST=localhost
+ARG DB_USERNAME=user
+ARG DB_PASSWORD=pass
+ARG DB_NAME=db
+ARG DB_PORT=5432
+
+ENV DB_URL="postgresql+psycopg2://$DB_USERNAME:$DB_PASSWORD@$DB_HOST:$DB_PORT/$DB_NAME"
 
 # Copy requirements.txt
 COPY requirements.txt alembic.ini ${LAMBDA_TASK_ROOT}

@@ -7,25 +7,6 @@ on:
   # Triggers the workflow on push or pull request events but only for the "main" branch
   push:
     branches: [ "main" ]
-
-  # Allows you to run this workflow manually from the Actions tab
-  workflow_dispatch:
-    workflow_dispatch:
-      inputs:
-        path_to_dockerfile:
-          description: Path to the dockerfile (default = 'Dockerfile')
-          default: "e2e-test/artifact.dockerfile"
-          type: string
-        docker_build_dir:
-          description: Docker build directory (default = '.')
-          default: "e2e-test"
-          type: string
-        image_tag:
-          description: Tag to apply to images.
-          type: string
-          default: snapshot-artifact
-
-
 env:
   AWS_REGION: "eu-central-1"
 
@@ -35,7 +16,6 @@ permissions:
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-  # This workflow contains a single job called "build"
   build:
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
@@ -94,13 +74,16 @@ jobs:
           -var ecr_name_repo=${{ env.ECR_REPO_NAME }}
 
       - name: "Terraform Apply config"
+        id: tf_apply
         shell: bash
-        run: >
+        run: |
             terraform apply -auto-approve
-            -var 'whitelisted_ip=${{ secrets.WHITELISTED_IP }}' 
-            -var 'db_password=${{ secrets.DB_PASSWORD }}' 
-            -var 'db_username=${{ secrets.DB_USERNAME }}' 
-            -var 'ecr_name_repo=${{ env.ECR_REPO_NAME }}'
+              -var 'whitelisted_ip=${{ secrets.WHITELISTED_IP }}' \
+              -var 'db_password=${{ secrets.DB_PASSWORD }}' \
+              -var 'db_username=${{ secrets.DB_USERNAME }}' \
+              -var 'ecr_name_repo=${{ env.ECR_REPO_NAME }}'
+            echo "DB_HOST=$(terraform output --raw database_endpoint)" >> "$GITHUB_OUTPUT"
+            echo "DB_PORT=$(terraform output --raw database_port)" >> "$GITHUB_OUTPUT"
 
       - name: Login to Amazon ECR
         id: login-ecr
@@ -119,8 +102,11 @@ jobs:
           DOCKER_FILE_PATH: "Dockerfile"
           IMAGE_TAG: "test"
         run: |
-          docker build "$DOCKER_BUILD_DIR" --platform linux/amd64 -f "$DOCKER_FILE_PATH" -t "$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG"
+          docker build "$DOCKER_BUILD_DIR" \
+            --build-arg DB_HOST="$DB_HOST" --build-arg DB_PORT="$DB_PORT" --build-arg 'DB_USERNAME=${{ secrets.DB_USERNAME }}' \
+            --build-arg 'DB_PASSWORD=${{ secrets.DB_PASSWORD }}' --build-arg 'DB_NAME=${{ secrets.DB_USERNAME }}' \
+            --platform linux/amd64 -f "$DOCKER_FILE_PATH" -t "$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG" \
           docker push "$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG"
           echo "IMAGE $IMAGE_TAG is pushed to $ECR_REGISTRY/$ECR_REPOSITORY"
           echo "image_tag=$IMAGE_TAG" 
-          echo "full_image=$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG"
+          echo "FULL_IMAGE=$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG" >> $GITHUB_OUTPUTS

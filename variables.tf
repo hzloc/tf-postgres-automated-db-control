@@ -68,14 +68,13 @@ variable "db_password" {
 }
 
 variable "whitelisted_ip" {
-  sensitive   = true
+  sensitive   = false
   type        = string
   description = "Whitelisted IPS"
 }
 
 variable "ecr_name_repo" {
-  type = string
-  description = "The name of the repository which will be derived from the github repo"
   sensitive = false
+  type = string
+  description = "ECR repository name for the project"
 }
-
