@@ -187,18 +187,18 @@ data "aws_ami" "ubuntu" {
   owners = ["099720109477"]
 }
 
-resource "aws_instance" "postgres_ec2_instance" {
-  count                  = var.settings.app.count
-  ami                    = data.aws_ami.ubuntu.id
-  instance_type          = var.settings.app.instance_type
-  subnet_id              = aws_subnet.postgres_public_subnet[count.index].id
-  key_name               = data.aws_key_pair.tutorial_kp.key_name
-  vpc_security_group_ids = [aws_security_group.tutorial_ec2_sg.id]
-  tags = {
-    Name = "postgres_ec2_instance_${count.index}"
-  }
-  associate_public_ip_address = true
-}
+# resource "aws_instance" "postgres_ec2_instance" {
+#   count                  = var.settings.app.count
+#   ami                    = data.aws_ami.ubuntu.id
+#   instance_type          = var.settings.app.instance_type
+#   subnet_id              = aws_subnet.postgres_public_subnet[count.index].id
+#   key_name               = data.aws_key_pair.tutorial_kp.key_name
+#   vpc_security_group_ids = [aws_security_group.tutorial_ec2_sg.id]
+#   tags = {
+#     Name = "postgres_ec2_instance_${count.index}"
+#   }
+#   associate_public_ip_address = true
+# }
 
 resource "aws_iam_role" "db_migrate_lambda" {
   assume_role_policy = jsonencode({
@@ -225,8 +225,8 @@ resource "aws_lambda_function" "db_migration_lambda" {
   image_uri = aws_ecr_repository.db_migration_repository.repository_url
 
   vpc_config {
+    security_group_ids = ["${aws_security_group.tutorial_ec2_sg.id}"]
+    subnet_ids         = ["${aws_subnet.postgres_public_subnet.id}"]
 
-    security_group_ids = [aws_security_group.tutorial_ec2_sg.id]
-    subnet_ids         = [aws_subnet.postgres_public_subnet[count.index]]
   }
 }
