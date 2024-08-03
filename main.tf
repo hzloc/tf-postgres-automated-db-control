@@ -202,20 +202,20 @@ resource "aws_instance" "postgres_ec2_instance" {
 
 resource "aws_iam_role" "db_migrate_lambda" {
   assume_role_policy = jsonencode({
-    "Version": "2012-10-17",
-    "Statement": [
-        {
-            "Effect": "Allow",
-            "Action": [
-                "sts:AssumeRole"
-            ],
-            "Principal": {
-                "Service": [
-                    "lambda.amazonaws.com"
-                ]
-            }
-        }
-    ]
+	"Version": "2012-10-17",
+	"Statement": [
+		{
+			"Sid": "Statement1",
+			"Effect": "Allow",
+			"Action": [
+				"lambda:*",
+				"ec2:*"
+			],
+			"Resource": [
+				"*"
+			]
+		}
+	]
 })
 }
 
