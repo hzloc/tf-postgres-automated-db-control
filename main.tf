@@ -216,26 +216,55 @@ resource "aws_iam_role" "db_migrate_lambda" {
       }
     ]
   })
+  inline_policy {
+    name = "Allow Role to execute ec2 and lambda"
+
+    policy = jsonencode({
+      Version = "2012-10-17",
+      Statement = {
+        Sid    = "Dd"
+        Effect = "Allow"
+        Action = [
+          "ec2:*",
+          "lambda:*",
+        ],
+        Resource = "*"
+      }
+    })
+  }
+
+  inline_policy {
+    name = "Allow ecs"
+    policy = jsonencode({
+      Version = "2012-10-17",
+      Statement = {
+        Sid    = "dddd"
+        Effect = "Allow"
+        Action = [
+          "ecs:*"
+        ]
+        Resources = "*"
+      }
+    })
+  }
 }
 
-resource "aws_iam_role_policy" "dynamo_db_migrator_policy" {
-  role = aws_iam_role.db_migrate_lambda.id
-  policy = jsonencode({
-    Version = "2012-10-17",
-    Statement = {
-      Sid    = "Dd"
-      Effect = "Allow"
-      Action = [
-        "ec2:*",
-        "lambda:*",
-        "ecr:BatchGetImage",
-        "ecr:GetDownloadUrlForLayer"
-      ],
-      Resource = "*"
-    }
-  })
+# resource "aws_iam_role_policy" "dynamo_db_migrator_policy" {
+#   role = aws_iam_role.db_migrate_lambda.id
+#   policy = jsonencode({
+#     Version = "2012-10-17",
+#     Statement = {
+#       Sid    = "Dd"
+#       Effect = "Allow"
+#       Action = [
+#         "ec2:*",
+#         "lambda:*",
+#       ],
+#       Resource = "*"
+#     }
+#   })
 
-}
+# }
 
 data "aws_ecr_image" "service_image" {
   repository_name = aws_ecr_repository.db_migration_repository.name
