@@ -217,7 +217,7 @@ resource "aws_iam_role" "db_migrate_lambda" {
     ]
   })
   inline_policy {
-    name = "Allow Role to execute ec2 and lambda"
+    name = "policy-434334"
 
     policy = jsonencode({
       Version = "2012-10-17",
@@ -234,7 +234,7 @@ resource "aws_iam_role" "db_migrate_lambda" {
   }
 
   inline_policy {
-    name = "Allow ecs"
+    name = "policy-434332"
     policy = jsonencode({
       Version = "2012-10-17",
       Statement = {
