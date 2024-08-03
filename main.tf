@@ -210,9 +210,6 @@ resource "aws_iam_role" "db_migrate_lambda" {
 			"Action": [
 				"lambda:*",
 				"ec2:*"
-			],
-			"Resource": [
-				"*"
 			]
 		}
 	]
