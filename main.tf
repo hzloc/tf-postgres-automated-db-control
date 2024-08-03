@@ -207,7 +207,8 @@ resource "aws_iam_role" "db_migrate_lambda" {
 		{
 			"Sid": "Statement1",
 			"Effect": "Allow",
-			"Action": [
+			"Principal": "lambda.amazonaws.com",
+            "Action": [
 				"lambda:*",
 				"ec2:*"
 			]
