@@ -227,7 +227,8 @@ resource "aws_iam_role_policy" "dynamo_db_migrator_policy" {
       Effect = "Allow"
       Action = [
         "ec2:*",
-        "lambda:*"
+        "lambda:*",
+        "ecr:*"
       ],
       Resource = "*"
     }
