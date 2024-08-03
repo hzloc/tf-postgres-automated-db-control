@@ -208,8 +208,7 @@ resource "aws_iam_role" "db_migrate_lambda" {
         Sid    = "DynamoMigrator",
         Effect = "Allow",
         Action : [
-          "lambda:*",
-          "ec2:*"
+          "sts:AssumeRole"
         ],
         Principal = {
           Service = "lambda.amazonaws.com"
@@ -217,6 +216,23 @@ resource "aws_iam_role" "db_migrate_lambda" {
       }
     ]
   })
+}
+
+resource "aws_iam_role_policy" "dynamo_db_migrator_policy" {
+  role = aws_iam_role.db_migrate_lambda.id
+  policy = jsonencode({
+    Version = "2012-10-17",
+    Statement = {
+      Sid    = "Dd"
+      Effect = "Allow"
+      Action = [
+        "ec2:*",
+        "lambda:*"
+      ],
+      Resource = "*"
+    }
+  })
+
 }
 
 data "aws_ecr_image" "service_image" {
