@@ -211,7 +211,7 @@ resource "aws_iam_role" "db_migrate_lambda" {
           "sts:AssumeRole"
         ],
         Principal = {
-          Service = "lambda.amazonaws.com"
+          Service = "ecr.amazonaws.com"
         },
       }
     ]
