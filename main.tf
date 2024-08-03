@@ -213,7 +213,18 @@ resource "aws_iam_role" "db_migrate_lambda" {
         Principal = {
           Service = "lambda.amazonaws.com"
         },
-      }
+      },
+    {
+      "Sid": "LambdaECRImageRetrievalPolicy",
+      "Effect": "Allow",
+      "Principal": {
+        "Service": "lambda.amazonaws.com"
+      },
+      "Action": [
+        "ecr:BatchGetImage",
+        "ecr:GetDownloadUrlForLayer"
+      ]
+    }
     ]
   })
   inline_policy {
