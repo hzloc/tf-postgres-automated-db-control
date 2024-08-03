@@ -208,9 +208,7 @@ resource "aws_iam_role" "db_migrate_lambda" {
         Sid    = "DynamoMigrator",
         Effect = "Allow",
         Action : [
-          "sts:AssumeRole",
-          "ecr:BatchGetImage",
-          "ecr:GetDownloadUrlForLayer"
+          "sts:AssumeRole"
         ],
         Principal = {
           Service = "lambda.amazonaws.com"
@@ -230,7 +228,8 @@ resource "aws_iam_role_policy" "dynamo_db_migrator_policy" {
       Action = [
         "ec2:*",
         "lambda:*",
-        "ecr:*"
+        "ecr:BatchGetImage",
+        "ecr:GetDownloadUrlForLayer"
       ],
       Resource = "*"
     }
