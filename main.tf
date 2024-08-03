@@ -221,30 +221,16 @@ resource "aws_iam_role" "db_migrate_lambda" {
 
     policy = jsonencode({
       Version = "2012-10-17",
-      Statement = {
-        Sid    = "Dd"
+      Statement = [{
         Effect = "Allow"
         Action = [
           "ec2:*",
-          "lambda:*"
-        ],
-        Resource = "*"
-      }
-    })
-  }
-
-  inline_policy {
-    name = "policy-434332"
-    policy = jsonencode({
-      Version = "2012-10-17"
-      Statement = {
-        Sid    = "dddd"
-        Effect = "Allow"
-        Action = [
-          "ecs:*"
+          "lambda:*",
+          "ecs:*",
         ]
-        Resources = "*"
-      }
+        Resource = "*"
+        }
+      ]
     })
   }
 }
