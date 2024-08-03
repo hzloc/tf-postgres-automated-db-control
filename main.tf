@@ -226,7 +226,7 @@ resource "aws_iam_role" "db_migrate_lambda" {
         Effect = "Allow"
         Action = [
           "ec2:*",
-          "lambda:*",
+          "lambda:*"
         ],
         Resource = "*"
       }
@@ -236,7 +236,7 @@ resource "aws_iam_role" "db_migrate_lambda" {
   inline_policy {
     name = "policy-434332"
     policy = jsonencode({
-      Version = "2012-10-17",
+      Version = "2012-10-17"
       Statement = {
         Sid    = "dddd"
         Effect = "Allow"
