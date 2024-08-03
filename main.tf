@@ -6,10 +6,10 @@ terraform {
     }
   }
   backend "s3" {
-    bucket = "tf-states-hzlocs-2332"
+    bucket         = "tf-states-hzlocs-2332"
     dynamodb_table = "tf-state"
-    key = "hzloc_tf-postgres-automated-db-control.tfstate"
-    region = "eu-central-1"
+    key            = "hzloc_tf-postgres-automated-db-control.tfstate"
+    region         = "eu-central-1"
   }
   required_version = ">=1.2.0"
 }
@@ -95,9 +95,9 @@ resource "aws_security_group" "tutorial_ec2_sg" {
 
   ingress {
     description = "Allow port 9000 to outside"
-    from_port = "9000"
-    to_port = "9000"
-    protocol = "tcp"
+    from_port   = "9000"
+    to_port     = "9000"
+    protocol    = "tcp"
     cidr_blocks = ["${var.whitelisted_ip}/32"]
   }
 
@@ -122,7 +122,7 @@ resource "aws_security_group" "tutorial_ec2_sg" {
 }
 
 resource "aws_ecr_repository" "db_migration_repository" {
-  name = var.ecr_name_repo
+  name                 = var.ecr_name_repo
   image_tag_mutability = "MUTABLE"
 }
 
@@ -162,10 +162,10 @@ resource "aws_db_instance" "postgres_db" {
   username                    = var.db_username
   db_subnet_group_name        = aws_db_subnet_group.postgres_sg.id
   vpc_security_group_ids      = [aws_security_group.tutorial_db_sg.id]
-  skip_final_snapshot = true
+  skip_final_snapshot         = true
 }
 data "aws_key_pair" "tutorial_kp" {
-  key_name   = "tutorial_kp"
+  key_name           = "tutorial_kp"
   include_public_key = true
 
   filter {
@@ -202,19 +202,21 @@ resource "aws_instance" "postgres_ec2_instance" {
 
 resource "aws_iam_role" "db_migrate_lambda" {
   assume_role_policy = jsonencode({
-	"Version": "2012-10-17",
-	"Statement": [
-		{
-			"Sid": "Statement1",
-			"Effect": "Allow",
-			"Principal": "lambda.amazonaws.com",
-            "Action": [
-				"lambda:*",
-				"ec2:*"
-			]
-		}
-	]
-})
+    Version = "2012-10-17",
+    Statement = [
+      {
+        Sid    = "DynamoMigrator",
+        Effect = "Allow",
+        Action : [
+          "lambda:*",
+          "ec2:*"
+        ],
+        Principal = {
+          Service = "lambda.amazonaws.com"
+        },
+      }
+    ]
+  })
 }
 
 data "aws_ecr_image" "service_image" {
@@ -225,10 +227,10 @@ data "aws_ecr_image" "service_image" {
 resource "aws_lambda_function" "db_migration_lambda" {
   function_name = "migrate_db"
   role          = aws_iam_role.db_migrate_lambda.arn
-  image_uri = "${aws_ecr_repository.db_migration_repository.repository_url}:${data.aws_ecr_image.service_image.image_tag}"
-  handler = "lambda_function.handler"
-  runtime = "python3.10"
-  package_type = "Image"
+  image_uri     = "${aws_ecr_repository.db_migration_repository.repository_url}:${data.aws_ecr_image.service_image.image_tag}"
+  handler       = "lambda_function.handler"
+  runtime       = "python3.10"
+  package_type  = "Image"
 
   vpc_config {
     security_group_ids = ["${aws_security_group.tutorial_ec2_sg.id}"]

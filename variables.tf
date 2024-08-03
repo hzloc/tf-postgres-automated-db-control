@@ -58,12 +58,12 @@ variable "settings" {
 variable "db_username" {
   type        = string
   description = "DB username"
-  sensitive = true
+  sensitive   = true
 }
 
 variable "db_password" {
   type        = string
-  sensitive = true
+  sensitive   = true
   description = "DB master password"
 }
 
@@ -74,7 +74,7 @@ variable "whitelisted_ip" {
 }
 
 variable "ecr_name_repo" {
-  sensitive = false
-  type = string
+  sensitive   = false
+  type        = string
   description = "ECR repository name for the project"
 }
