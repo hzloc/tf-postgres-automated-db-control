@@ -71,7 +71,7 @@ jobs:
           IMAGE_TAG: "latest"
         run: |
           docker build \
-            --build-arg DB_HOST="$DB_HOST" --build-arg DB_PORT="$DB_PORT" --build-arg 'DB_USERNAME=${{ secrets.DB_USERNAME }}' \
+            --build-arg DB_HOST="terraform-20240803095408631900000003.cfysc6i0k096.eu-central-1.rds.amazonaws.com" --build-arg DB_PORT=5432 --build-arg 'DB_USERNAME=${{ secrets.DB_USERNAME }}' \
             --build-arg 'DB_PASSWORD=${{ secrets.DB_PASSWORD }}' --build-arg 'DB_NAME=${{ secrets.DB_USERNAME }}' \
             --platform linux/amd64 -t "$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG" "$DOCKER_BUILD_DIR"
           docker push "$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG"
