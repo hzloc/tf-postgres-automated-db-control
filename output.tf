@@ -25,3 +25,11 @@ output "lambda_invoke_url" {
 output "ecr_rep_url" {
   value = aws_ecr_repository.db_migration_repository.repository_url
 }
+
+output "lambda_function_name" {
+  value = aws_lambda_function.db_migration_lambda.function_name
+}
+
+output "latest_image_uri" {
+  value = "${aws_ecr_repository.db_migration_repository.repository_url}:${data.aws_ecr_image.service_image.image_tag}""
+}

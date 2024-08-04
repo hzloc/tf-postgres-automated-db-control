@@ -117,3 +117,9 @@ jobs:
               -var 'ecr_name_repo=${{ env.ECR_REPO_NAME }}'
             echo "DB_HOST=$(terraform output --raw database_endpoint)" >> "$GITHUB_OUTPUT"
             echo "DB_PORT=$(terraform output --raw database_port)" >> "$GITHUB_OUTPUT"
+
+      - name: Update the lambda function after a new image published
+        shell: bash
+        run: |
+          aws lambda update-function-code --function-name "$(terraform output --raw lambda_function_name)" \
+            --image-uri "$(terraform output --raw latest_image_uri)"
