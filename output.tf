@@ -31,5 +31,5 @@ output "lambda_function_name" {
 }
 
 output "latest_image_uri" {
-  value = "${aws_ecr_repository.db_migration_repository.repository_url}:${data.aws_ecr_image.service_image.image_tag}""
+  value = "${aws_ecr_repository.db_migration_repository.repository_url}:${data.aws_ecr_image.service_image.image_tag}"
 }

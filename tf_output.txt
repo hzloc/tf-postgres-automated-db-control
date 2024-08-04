@@ -1,2 +1,0 @@
-DB_HOST=terraform-20240731102345657600000002.cfysc6i0k096.eu-central-1.rds.amazonaws.com
-DB_PORT=5432
