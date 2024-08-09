@@ -46,7 +46,7 @@ variable "settings" {
       allow_major_version_upgrade = false
       auto_minor_version_upgrade  = true
       instance_class              = "db.t3.micro"
-      db_name                     = "fddomain"
+      db_name                     = "husoliiioo"
     },
     "app" = {
       instance_type = "t2.micro"
