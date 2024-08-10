@@ -2,9 +2,9 @@ FROM public.ecr.aws/lambda/python:3.12
 
 # set DB connection string
 ARG DB_HOST=tf-postgres-aws-postgres-1
-ARG DB_USERNAME=fddomain
-ARG DB_PASSWORD=fddomain
-ARG DB_NAME=fddomain
+ARG DB_USERNAME=hzlocslocs
+ARG DB_PASSWORD=hzlocslocs
+ARG DB_NAME=hzlocslocs
 ARG DB_PORT=5432
 
 ENV DB_URL="postgresql+psycopg2://$DB_USERNAME:$DB_PASSWORD@$DB_HOST:$DB_PORT/$DB_NAME"

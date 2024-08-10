@@ -4,9 +4,9 @@ services:
     ports:
       - 54325:5432
     environment:
-      - POSTGRES_PASSWORD=fddomain
-      - POSTGRES_USER=fddomain
-      - POSTGRES_DB=fddomain
+      - POSTGRES_PASSWORD=hzlocslocs
+      - POSTGRES_USER=hzlocslocs
+      - POSTGRES_DB=hzlocslocs
 
   metabase:
     image: metabase/metabase
